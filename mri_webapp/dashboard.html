@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Driven Brain Tumor Detection</title>
+    <style>
+        /* Basic reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Ensure the body fills the entire viewport */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef4fb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh; /* Ensure full height */
+        }
+
+        /* Header styling */
+        header {
+            width: 100%; /* Full width */
+            background-color: #8dbcf4; /* Blue background for header */
+            padding: 10px 20px; /* Padding for the header */
+            position: sticky; /* Sticky positioning for header */
+            top: 0; /* Stick to the top */
+            z-index: 1000; /* Ensure header is on top */
+        }
+
+        /* Navigation styling */
+        nav {
+            display: flex; /* Use flexbox for layout */
+            justify-content: space-between; /* Space between navigation items */
+            align-items: center; /* Center items vertically */
+        }
+
+        nav .logo {
+            font-size: 1.5em; /* Logo font size */
+            color: #fff; /* Logo color */
+            font-weight: bold; /* Logo weight */
+        }
+
+        nav ul {
+            display: flex; /* Use flexbox for list */
+            list-style: none; /* Remove bullet points */
+            gap: 20px; /* Space between navigation items */
+        }
+
+        nav ul li {
+            padding: 10px; /* Padding around list items */
+        }
+
+        nav a {
+            color: #fff; /* White text color */
+            font-weight: bold; /* Bold font */
+            text-decoration: none; /* Remove underline */
+            padding: 10px 15px; /* Padding around links */
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s; /* Smooth background transition */
+        }
+
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2); /* Light background on hover */
+        }
+
+.hero {
+    padding: 50px; /* Padding around the hero section */
+    background-color: #eef4fb;
+    display: flex; /* Flexbox for horizontal alignment */
+    align-items: center; /* Center items vertically */
+    justify-content: flex-start; /* Align items to the left */
+    gap: 20px; /* Space between items */
+}
+
+.hero-content {
+    display: flex; /* Use flex for content layout */
+    flex-direction: column; /* Arrange items in a column */
+    align-items: flex-start; /* Align text to the left */
+    padding: 0; /* Remove additional padding */
+    margin-left: 20px; /* Add margin on the left for spacing */
+    margin-top: 100px;
+    margin-bottom: 70px;
+
+}
+
+.hero h1 {
+    color: #333;
+    font-size: 50px; /* Headline font size */
+    margin: 0 0 30px; /* Space below the headline */
+    margin-bottom: 70px;
+    margin-top: 70px;
+    
+    
+}
+
+.hero p {
+    color: #666;
+    font-size: 22px; /* Description font size */
+    margin: 0; /* No additional margin */
+    max-width: 500px; /* Limit width of paragraph */
+    margin-bottom: 100px;
+}
+
+.hero .logo {
+    width: 300px; /* Set logo width */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: 100px; /* Space between logo and text */
+    margin-left: 100px;
+    margin-top: 100px;
+}
+
+
+.cta-button {
+            padding: 10px 20px;
+            background-color: #0673b1; /* Green button color */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px; /* Margin for spacing between buttons */
+            text-decoration: none; /* Remove underline from links */
+            transition: background-color 0.3s; /* Smooth transition */
+            margin-left: 70px;
+            margin-right: 0px;
+            margin-top: 20px;
+            
+        }
+
+.cta-button:hover {
+            background-color: #8dbcf4; /* Darker green on hover */
+        }
+
+        /* Container for the dashboard */
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap; /* Wrap images on smaller screens */
+            justify-content: center; /* Center images horizontally */
+            align-items: center; /* Center images vertically */
+            width: 100%; /* Full width */
+            height: auto;
+            margin: 20px 0; /* Space below header */
+            text-align: center; /* Center titles under images */
+            padding:30px;
+            margin-bottom: 100px;
+        }
+
+        /* Image styling */
+        .dashboard img {
+            width: 350px; /* Set a fixed width for images */
+            height: 350px; /* Set a fixed height for images */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: transform 0.3s; /* Smooth scaling */
+            margin: 50px; /* Space between images */
+            opacity: 0;
+    transform: translateY(30px); /* Slightly below their normal position */
+    transition: transform 0.6s ease-out, opacity 0.6s ease-out; /* Smooth transitions */
+        }
+
+/* Class to make items visible */
+.dashboard img.visible {
+    opacity: 1;
+    transform: translateX(0); /* Reset to normal position */
+}
+
+/* Add transition delay to create staggered appearance */
+.dashboard img.stagger-1 {
+    transition-delay: 0.2s; /* Delay for the first item */
+}
+.dashboard img.stagger-2 {
+    transition-delay: 0.5s; /* Delay for the second item */
+}
+.dashboard img.stagger-3 {
+    transition-delay: 0.7s; /* Delay for the third item */
+}
+.dashboard img.stagger-4 {
+    transition-delay: 0.9s; /* Delay for the fourth item */
+}
+.dashboard img.stagger-5 {
+    transition-delay: 0.11s; /* Delay for the fifth item */
+}
+
+        /* Image hover effect */
+        .dashboard img:hover {
+            transform: scale(1.05); /* Scale image slightly on hover */
+        }
+
+        /* Title styling under images */
+        h2 {
+            margin-top: 10px; /* Space above titles */
+            font-size: 16px; /* Font size for titles */
+            color: #333; /* Title color */
+        }
+
+        /* Features section */
+        .features {
+            display: grid; /* Use grid layout */
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive columns */
+            gap: 60px; /* Space between items */
+            padding: 20px; /* Padding for the section */
+            margin: 40px 20px; /* Margins around the section */
+            width: 100%; /* Full width */
+            max-width: 1000px; /* Max width for features */
+            margin-bottom: 150px;
+            margin-right: 50px;
+        }
+
+        .feature {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 30px;
+            
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s; /* Smooth scaling */
+            position: relative; /* Position relative for scatter effect */
+            overflow: hidden; /* Hide overflow */
+        }
+
+
+        .feature:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
+        }
+        h1{
+            margin-top: 100px;
+            margin-bottom: 50px;
+        }
+
+        /* Testimonial section */
+        .testimonials {
+            background-color: #eef4fb;
+            padding: 40px 20px;
+            width: 100%;
+            text-align: center;
+            margin-top: 150px;
+
+
+            
+        }
+        
+
+        .testimonial {
+            margin: 20px auto;
+            font-style: italic;
+            font-size: 30px;
+            color: #555;
+            display: none; /* Hide all testimonials by default */
+            transition: opacity 0.2s; /* Smooth opacity transition */
+            margin-bottom: 150px;
+        }
+
+        /* Show the active testimonial */
+        .testimonial.active {
+            display: block; /* Show the active testimonial */
+            opacity: 1; /* Fully opaque */
+        }
+
+        .testimonial.inactive {
+            opacity: 0; /* Fully transparent for inactive */
+        }
+
+        /* Footer styling */
+        footer {
+            background-color: #fff;
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            margin-top: auto;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+        }
+
+        /* Remove underline from links */
+        a {
+            text-decoration: none; /* Ensure no underline on links */
+            color: inherit; /* Use inherited color for text */
+        }
+        .fade-in-scroll {
+    opacity: 0; /* Initially hidden */
+    transform: translateY(50px); /* Move down by 50px */
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out; /* Smooth transition */
+}
+
+.fade-in-scroll.visible {
+    opacity: 1; /* Fully visible */
+    transform: translateY(0); /* Move to the original position */
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Brain Tumor Detection</div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="upload_mri.html">Upload MRI</a></li>
+                <li><a href="patients_data.html">Patient Data</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h1>AI-Driven Brain Tumor Detection</h1>
+            <p>Assisting radiologists and neurosurgeons in diagnosing brain tumors quickly and accurately.</p>
+            <div >  
+                <a href="index.html" class="cta-button">Upload MRI</a>
+                 <a href="learn.html" class="cta-button">Lear More</a>
+        </div>
+        </div>
+        
+        <img src="Template-for-radioactive-ink-on-paper-to-simulate-GM-and-WM-Figure-2-Phantom-with-one-removebg-preview.png" alt="Logo" class="logo"> <!-- Add your logo image source -->
+
+  
+    </div>
+    <div class="testimonials">
+        
+        <div class="testimonial active">
+            <p class="fade-in-scroll">"This platform has transformed our diagnostic process!" - Dr. Smith</p>
+        </div>
+        <div class="testimonial inactive">
+            <p >"The accuracy is remarkable, and the interface is so easy to use!" - Dr. Jones</p>
+        </div>
+        <div class="testimonial inactive">
+            <p>"A vital tool in our practice for timely interventions!" - Dr. Lee</p>
+        </div>
+    </div>
+    <h1>Get Started </h1>
+    <div class="dashboard">
+        <a href="index.html"> <!-- Link to Patient Data Upload Page -->
+            <img src="OIP.jpeg" alt="Upload MRI">
+            <h2>Upload MRI</h2>
+        </a>
+        <a href="patients_data.html"> <!-- Link to Patient Data Page -->
+            <img src="R.png" alt="Patient Data">
+            <h2>Patient Data</h2>
+        </a>
+        <a href="learn.html"> <!-- Link to About Page -->
+            <img src="R2.jpeg" alt="About">
+            <h2>About</h2>
+        </a>
+
+    </div>
+    <h1 >Key Features</h1>
+
+    <div class="features">
+        
+        <div class="feature">
+            <h3>Fast and Accurate</h3>
+            <p>Utilizing advanced algorithms to detect tumors with high precision.</p>
+        </div>
+        <div class="feature">
+            <h3>User-Friendly Interface</h3>
+            <p>Easy navigation for patients and doctors alike.</p>
+        </div>
+        <div class="feature">
+            <h3>Secure Data Handling</h3>
+            <p>Your data is protected with the highest security standards.</p>
+        </div>
+    </div>
+
+
+
+    <footer>
+        <p>&copy; 2024 Brain Tumor Detection. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Testimonial rotation script
+        const testimonials = document.querySelectorAll('.testimonial');
+        let index = 0;
+
+        function showTestimonial() {
+            testimonials[index].classList.remove('active');
+            testimonials[index].classList.add('inactive');
+            index = (index + 1) % testimonials.length;
+            testimonials[index].classList.remove('inactive');
+            testimonials[index].classList.add('active');
+        }
+
+        setInterval(showTestimonial, 5000); // Change testimonial every 5 seconds
+        // Select all dashboard images
+// Select all dashboard images
+const dashboardItems = document.querySelectorAll('.dashboard img');
+
+// Intersection Observer callback function
+const observerCallback = (entries, observer) => {
+  entries.forEach((entry, index) => {
+    if (entry.isIntersecting) {
+      // Add staggered visible class based on item index
+      entry.target.classList.add('visible', `stagger-${index % 5 + 1}`); // Cycles through stagger classes
+      observer.unobserve(entry.target); // Stop observing the item once it becomes visible
+    }
+  });
+};
+
+// Create the observer
+const observerOptions = {
+  threshold: 0.5 // Trigger when 10% of the image is visible
+};
+const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+// Observe each dashboard image
+dashboardItems.forEach(item => {
+  observer.observe(item);
+});
+
+    </script>
+    <script>
+        document.addEventListener('scroll', function() {
+            var element = document.querySelector('.fade-in-scroll');
+            var position = element.getBoundingClientRect();
+    
+            // Check if the element is in the viewport
+            if (position.top >= 0 && position.bottom <= window.innerHeight) {
+                element.classList.add('visible');
+            }
+        });
+    </script>
+    
+
+    
+</body>
+</html>

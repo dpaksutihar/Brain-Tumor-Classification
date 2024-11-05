@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Data Upload</title>
+    <style>
+        /* Basic reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Ensure the body fills the entire viewport */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef4fb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh; /* Ensure full height */
+        }
+
+        /* Header styling */
+        header {
+            width: 100%; /* Full width */
+            background-color: #8dbcf4; /* Blue background for header */
+            padding: 10px 20px; /* Padding for the header */
+            position: sticky; /* Sticky positioning for header */
+            top: 0; /* Stick to the top */
+            z-index: 1000; /* Ensure header is on top */
+        }
+
+        /* Navigation styling */
+        nav {
+            display: flex; /* Use flexbox for layout */
+            justify-content: space-between; /* Space between navigation items */
+            align-items: center; /* Center items vertically */
+        }
+
+        nav .logo {
+            font-size: 1.5em; /* Logo font size */
+            color: #fff; /* Logo color */
+            font-weight: bold; /* Logo weight */
+        }
+
+        nav ul {
+            display: flex; /* Use flexbox for list */
+            list-style: none; /* Remove bullet points */
+            gap: 20px; /* Space between navigation items */
+        }
+
+        nav ul li {
+            padding: 10px; /* Padding around list items */
+        }
+
+        nav a {
+            color: #fff; /* White text color */
+            font-weight: bold; /* Bold font */
+            text-decoration: none; /* Remove underline */
+            padding: 10px 15px; /* Padding around links */
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s; /* Smooth background transition */
+        }
+
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2); /* Light background on hover */
+        }
+
+        .container {
+            flex: 1; /* Allow the container to grow and fill available space */
+            width: 70vw;
+            height: 100%;
+            margin: 0px auto; /* Center horizontally and add top margin */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin-bottom: 100px;
+        }
+
+
+        h1 {
+            margin: 0;
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 35px; /* Increased font size */
+        }
+        .t{
+            margin-top: 50px;
+            margin-bottom: 25px;
+        }
+        /* New Back to Dashboard button style */
+        .back-button {
+            background-color: #00457d;
+            color: rgb(180, 213, 235);
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            margin-bottom: 20px; /* Add space below the button */
+        }
+
+        .back-button:hover {
+            background-color: #e1eaff;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            height: 100%;
+            gap: 20px;
+        }
+
+        .image-section {
+            flex: 1;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 100%;
+            border: 2px dashed #fbf7f7;
+            background-color: #f0f7fe;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 10px; /* Space between image preview and album */
+        }
+
+        .placeholder {
+            color: #666;
+            font-size: 18px;
+            position: absolute;
+            text-align: center;
+            pointer-events: none;
+        }
+
+
+        .custom-file-upload {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+        }
+
+        .custom-file-upload input[type="file"] {
+            display: none;
+        }
+
+        .form-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100%;
+
+            div {
+                padding: 20px;
+
+                label {
+                    margin-right: 20px;
+                }
+            }
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="tel"],
+        textarea {
+            padding: 20px;
+            border: 1px solid #cbe2ff;
+            border-radius: 4px;
+            width: 90%;
+            margin-left: 10px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        button {
+            background-color: #00457d;
+            color: rgb(180, 213, 235);
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #e1eaff;
+        }
+
+        #output {
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+        }
+
+        /* Loading spinner styles */
+        #loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner {
+            border: 8px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #00457d;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        /* Album section styling */
+        .album {
+            margin-top: 10px; /* Reduced space between image preview and album */
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap; /* Wrap images to next line */
+            gap: 10px; /* Space between images */
+            justify-content: center; /* Center images */
+        }
+
+        .album img {
+            max-width: 10%; /* Set max width to 10% of the container */
+            max-height: 150px; /* Set a max height for album images */
+            border-radius: 5px; /* Slightly rounded corners */
+            object-fit: cover; /* Cover the container without distortion */
+        }
+
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                width: 90vw;
+                height: auto;
+            }
+
+            .form-container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .image-section,
+            .form-section {
+                width: 100%;
+                height: 50vh; /* Adjust height for smaller screens */
+            }
+        }
+                /* Footer styling */
+                footer {
+            background-color: #fff;
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+        }
+
+        /* Remove underline from links */
+        a {
+            text-decoration: none; /* Ensure no underline on links */
+            color: inherit; /* Use inherited color for text */
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">
+        <div class="spinner"></div>
+    </div>
+    <header>
+        <nav>
+            <div class="logo">Brain Tumor Detection</div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="upload_mri.html">Upload MRI</a></li>
+                <li><a href="patients_data.html">Patient Data</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <h1 class="t">Patient Data Upload</h1>
+    <div class="container">
+        <!-- Back to Dashboard button -->
+        <form id="uploadForm" class="form-container" >
+            <div class="image-section" id="imageSection">
+                <div class="image-preview" id="imagePreview">
+                    <div class="placeholder">No Image Selected</div>
+                    <label class="custom-file-upload">
+                        <input type="file" name="images" multiple accept="image/*" onchange="previewImage(event); addToAlbum(event);" />
+                    </label>
+                </div>
+
+                <!-- Image Album Section -->
+                <div class="album" id="imageAlbum">
+                    <!-- Images will be appended here -->
+                </div>
+            </div>
+            <div class="form-section">
+                <input type="text" name="name" placeholder="Name" required>
+                <input type="number" name="age" placeholder="Age" required min="0">
+                <!-- Gender -->
+                <div>
+                    <label>Gender:</label>
+                    <label><input type="radio" name="gender" value="male" required checked> Male</label>
+                    <label><input type="radio" name="gender" value="female"> Female</label>
+                </div>
+                <input type="text" name="address" placeholder="Address" required>
+                <input type="tel" name="phone" placeholder="Phone" required pattern="[0-9]{10}">
+                <textarea name="remarks" placeholder="Remarks" required></textarea>
+                <button type="submit">Submit</button>
+                <div id="output"></div>
+            </div>
+        </form>
+        <div id="output"></div>
+    </div>
+    <footer>
+        <p>© 2024 Brain Tumor Detection. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+function previewImage(event) {
+    const imagePreview = document.getElementById('imagePreview');
+    const placeholder = document.querySelector('.placeholder');
+    const files = event.target.files; // Get all files from the input
+
+    if (files.length > 0) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            imagePreview.style.backgroundImage = `url(${e.target.result})`;
+            placeholder.style.display = 'none';
+        };
+        reader.readAsDataURL(files[0]); // Preview the first selected image
+    }
+}
+
+    
+        function addToAlbum(event) {
+    const files = event.target.files; // Get all files from the input
+    const imageAlbum = document.getElementById('imageAlbum');
+    
+    for (let i = 0; i < files.length; i++) { // Loop through each file
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = document.createElement('img');
+            img.src = e.target.result; // Set the image source to the loaded result
+            img.alt = "Uploaded Image"; // Optional: Add alt text for accessibility
+            img.classList.add('album-image'); // Add a class for styling
+            imageAlbum.appendChild(img); // Append the new image to the album
+        };
+        reader.readAsDataURL(files[i]); // Read each file as a data URL
+    }
+}
+
+    
+ // Submit form data using Fetch API
+const form = document.getElementById('uploadForm');
+form.addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    // Show loading spinner
+    document.getElementById('loading').style.display = 'flex';
+
+    const formData = new FormData(form); // Collect all form data
+    const imageFile = formData.get('image'); // Get the uploaded file
+
+    try {
+        console.log("patient's data:", formData)
+        const response = await fetch('http://localhost:3000/upload', {
+            method: 'POST',
+            body: formData
+        });
+        console.log('response:', response);
+        // Check if the response is successful
+        if (response.ok) {
+            const result = await response.json();
+            document.getElementById('output').innerText = result.message;
+            console.log('success 1', imageFile);
+            // Add the image to the album after a successful upload
+            if (imageFile) {
+                addToAlbum(imageFile);
+            }
+            console.log('success 2');
+            // Redirect to the patient profile page using the returned patient ID
+            const patientId = result.patientId; // Adjust this based on your API response structure
+            window.location.href = `profile.html?id=${patientId}`; // Redirect to patient profile page with the ID as a query parameter
+        } else {
+            const errorData = await response.json();
+            document.getElementById('output').innerText = errorData.message || 'Error submitting the form.';
+            console.error('Error Response:', errorData);
+        }
+    } catch (error) {
+        document.getElementById('output').innerText = 'Error submitting the form.';
+        console.error('Fetch Error:', error);
+    } finally {
+        // Hide loading spinner
+        document.getElementById('loading').style.display = 'none';
+    }
+});
+
+
+// form.addEventListener('submit', async function (event) {
+//     event.preventDefault();
+
+//     // Show loading spinner
+//     document.getElementById('loading').style.display = 'flex';
+
+//     const formData = new FormData(form);
+    
+//     try {
+//         const response = await fetch('http://localhost:3000/upload', {
+//             method: 'POST',
+//             body: formData
+//         });
+
+//         // Check if the response is successful
+//         if (response.ok) {
+//             const result = await response.json();
+//             document.getElementById('output').innerText = result.message;
+
+//             // Clear the form inputs after successful submission
+//             form.reset();
+//             document.getElementById('imageAlbum').innerHTML = ''; // Clear the album
+
+//             // Redirect to the patient profile page using the returned patient ID
+//             const patientId = result.patientId; // Adjust this based on your API response structure
+//             window.location.href = `profile.html?id=${patientId}`; // Redirect to patient profile page with the ID as a query parameter
+//         } else {
+//             const errorData = await response.json();
+//             document.getElementById('output').innerText = errorData.message || 'Error submitting the form.';
+//             console.error('Error Response:', errorData);
+//         }
+//     } catch (error) {
+//         document.getElementById('output').innerText = 'Error submitting the form.';
+//         console.error('Submission Error:', error);
+//     } finally {
+//         // Hide loading spinner
+//         document.getElementById('loading').style.display = 'none';
+//     }
+// });
+
+    </script>
+    
+    
+</body>
+</html>

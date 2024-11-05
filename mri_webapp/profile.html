@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient </title>
+    <style>
+        /* Basic reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Ensure the body fills the entire viewport */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef4fb;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensure full height */
+        }
+
+        /* Header styling */
+        header {
+            width: 100%; /* Full width */
+            background-color: #8dbcf4; /* Blue background for header */
+            padding: 10px 20px; /* Padding for the header */
+            position: sticky; /* Sticky positioning for header */
+            top: 0; /* Stick to the top */
+            z-index: 1000; /* Ensure header is on top */
+        }
+
+        /* Navigation styling */
+        nav {
+            display: flex; /* Use flexbox for layout */
+            justify-content: space-between; /* Space between navigation items */
+            align-items: center; /* Center items vertically */
+        }
+
+        nav .logo {
+            font-size: 1.5em; /* Logo font size */
+            color: #fff; /* Logo color */
+            font-weight: bold; /* Logo weight */
+        }
+
+        nav ul {
+            display: flex; /* Use flexbox for list */
+            list-style: none; /* Remove bullet points */
+            gap: 20px; /* Space between navigation items */
+        }
+
+        nav ul li {
+            padding: 10px; /* Padding around list items */
+        }
+
+        nav a {
+            color: #fff; /* White text color */
+            font-weight: bold; /* Bold font */
+            text-decoration: none; /* Remove underline */
+            padding: 10px 15px; /* Padding around links */
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s; /* Smooth background transition */
+        }
+
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2); /* Light background on hover */
+        }
+
+ul li a,
+.btnn.dropdown-toggle {
+    top: 0%;
+    bottom: 0%;
+    font-weight: bold; /* Bold font */
+
+    text-decoration: none; /* Remove underline */
+    color: #fff; /* Link color */
+    padding: 10px 15px; /* Padding for links and buttons */
+    border-radius: 5px; /* Rounded corners */
+    transition: background 0.3s; /* Transition for hover effect */
+    border: none; /* Remove button border */
+    background: transparent; /* Transparent background for dropdown button */
+    cursor: pointer; /* Change cursor to pointer for button */
+}
+
+ul li a:hover,
+.btn.dropdown-toggle:hover {
+    background-color: #e2e6ea; /* Background on hover */
+}
+.btn.dropdown-toggle {
+    font-weight: bold; /* Bold font */
+
+    top: 0%;
+    bottom: 0%;
+    text-decoration: none; /* Remove underline */
+    color: #fff; /* Link color */
+    padding: 10px 15px; /* Padding for links and buttons */
+    border-radius: 5px; /* Rounded corners */
+    transition: background 0.3s; /* Transition for hover effect */
+    border: none; /* Remove button border */
+    background: transparent; /* Transparent background for dropdown button */
+    cursor: pointer; /* Change cursor to pointer for button */
+}
+
+ul li a:hover,
+.btnn.dropdown-toggle:hover {
+    background-color: #e2e6ea; /* Background on hover */
+}
+.dropdown-content {
+
+    display: none; /* Hidden by default */
+    position: absolute; /* Absolute positioning */
+    background-color: white; /* Dropdown background color */
+    min-width: 200px; /* Minimum width for dropdown */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Shadow for dropdown */
+    z-index: 1; /* Ensure dropdown is above other elements */
+    padding: 10px; /* Add padding around dropdown items */
+}
+
+.dropdown:hover .dropdown-content {
+    display: block; /* Show dropdown on hover */
+}
+
+.filter-btn {
+    color: #ffffff; /* Change text color to white */
+    background-color: #9ed1fc; /* Set background to transparent */
+    padding: 10px 15px; /* Match the padding of nav links */
+    border-radius: 5px; /* Match rounded corners */
+    text-decoration: none; /* Remove underline */
+    transition: background-color 0.3s; /* Smooth background transition */
+    cursor: pointer; /* Pointer cursor for interactivity */
+}
+
+.filter-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Light background on hover */
+}
+
+
+        /* Heading styling */
+        h1 {
+            margin: 20px 0;
+            color: #333;
+            font-size: 40px; /* Increased font size */
+            text-align: center; /* Center align heading */
+            
+        }
+
+        .s{
+            position: fixed; /* Fix the container on the screen */
+            margin: 20px 0;
+            color: #333;
+            font-size: 40px; /* Increased font size */
+            text-align: center; /* Center align heading */
+            margin-top: 100px;
+            margin-left: 37%;
+            
+        
+        }
+
+        /* Button styling */
+        .btnn {
+            width: 150px; /* Reduced width */
+            background-color: #00457d;
+            color: rgb(180, 213, 235);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+
+            font-size: 18px; /* Reduced font size */
+            top: 0%;
+        }
+
+        .btn:hover {
+            background-color: #e1eaff;
+        }
+
+        .back-btn {
+            background-color: #6c757d; /* Color for back button */
+        }
+
+        .back-btn:hover {
+            background-color: #5a6268; /* Darker shade on hover */
+        }
+
+        /* Container for the patient list */
+        /* Container for the patient list */
+        .patient-list {
+            width: 100%;
+            margin: 20px auto;
+            padding: 50px;
+            margin-top: 150px;
+        }
+
+        /* Patient item container styling */
+        .patient-item {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #333;
+            transition: background-color 0.3s ease;
+        }
+
+        .patient-item a {
+            text-decoration: none;
+            color: inherit;
+            flex-grow: 1; /* Allow the link to take up remaining space */
+        }
+        /* Hover effect on patient items */
+        .patient-item:hover {
+            background-color: #f0f8ff;
+        }
+
+        /* Delete button styling */
+        .delete-btn {
+            padding: 10px;
+            background-color: #f59e94;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            
+        }
+
+        .delete-btn:hover {
+            background-color: #f0c9c4;
+        }
+
+        /* Footer styling */
+        footer {
+            background-color: #fff;
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+            position: relative; /* Positioning to ensure it stays at bottom */
+        }
+
+
+
+        .btn-containerr {
+    justify-content: center;
+    align-items: center; /* Center items vertically */
+    flex-direction: row; /* Ensure buttons are aligned horizontally */
+    gap: 10px; /* Add some space between the buttons */
+    padding: 10px;
+    width: 50%; /* Adjust the width of the container */
+    margin: 0 auto; /* Center the container horizontally */
+    background-color: #caeaf6; /* Background color for the container */
+    border-radius: 20px; /* Rounded corners */
+    left: 0; /* Ensure the container is placed at the center horizontally */
+    right: 0; /* Ensure the container is placed at the center horizontally */
+
+        transition: transform 0.3s ease-in-out; /* Smooth transition for the sliding effect */
+        z-index: 1000;
+
+}
+
+        /* Checkbox styling */
+        .patient-checkbox {
+            margin-right: 10px; /* Space between checkbox and text */
+        }
+
+
+
+
+
+
+/* Style for individual dropdown items */
+.dropdown-item {
+    padding: 8px;
+    cursor: pointer;
+    color: #333;
+}
+
+
+.c{
+    position: sticky;
+    top: 50px; /* Just below the navbar */
+    left: 0;
+    right: 0;
+    height: 190px; /* Adjust to match the button container area */
+    background-color: #eef4fb; /* Set your desired background color */
+    z-index: -1; /* Ensure it is behind the buttons */
+}
+
+
+        /* Profile container styling */
+        .profile-container {
+            height: auto; /* Adjusted to fit content */
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-section {
+            width: 40%;
+            text-align: center;
+            position: relative; /* Add position relative for drawing */
+        }
+
+        .image-section img {
+            width: 40vh;
+            height: 40vh;
+            border-radius: 10px;
+            object-fit: contain;
+        }
+
+        #imageCanvas {
+            display: none;
+        }
+        .info-section {
+            width: 55%;
+        }
+
+        .info-item {
+            margin-bottom: 20px;
+            p {
+                margin-left: 10px;
+            }
+        }
+
+        .btn-container {
+            text-align: center;
+        }
+        .btn-containerrr {
+            text-align: center;
+            margin: 5px;
+            background-color: transparent;
+            border-color: transparent;
+
+
+}     
+
+
+
+.btn {
+            background-color: #00457d;
+            color: rgb(180, 213, 235);
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #e1eaff;
+        }
+
+        /* Additional sections */
+        .additional-section {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 20px; /* Space between the sections */
+        }
+
+        /* Diagnosis styling */
+        .diagnosis-section,
+        .treatment-section {
+            flex: 1; /* Take remaining space */
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .diagnosis-section h3,
+        .treatment-section h3 {
+            margin-top: 0;
+        }
+
+        .highlighted-image {
+            border: 2px solid #00457d;           /* Green border */
+            box-shadow: 0px 4px 8px rgba(0,69, 125, 0.3);  /* Green shadow */
+            padding: 10px;                     /* Optional: Padding to make the effect more visible */
+            border-radius: 5px;                /* Optional: Rounded corners */
+        }
+
+        /* Gallery styling */
+        .gallery {
+            flex: 1; /* Take remaining space */
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .gallery h2 {
+            text-align: center;
+        }
+
+        .gallery img {
+            width: 100px; /* Thumbnail size */
+            height: 100px; /* Thumbnail size */
+            object-fit: cover; /* Cover the area */
+            border-radius: 8px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: transform 0.3s; /* Smooth zoom effect */
+        }
+
+        .gallery img:hover {
+            transform: scale(1.1); /* Zoom effect on hover */
+        }
+
+        /* Treatment styling */
+        .treatment-form {
+            margin-top: 20px;
+        }
+
+        .treatment-form input,
+        .treatment-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Section to display treatment details */
+        .treatment-history {
+            margin-bottom: 20px;
+        }
+
+        .treatment-entry {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border-left: 5px solid #4CAF50;
+        }
+
+        .treatment-entry h4 {
+            margin: 0;
+            font-size: 1.1em;
+        }
+
+        .treatment-entry p {
+            margin: 5px 0;
+        }
+
+        /* Media query for responsive design */
+        @media (max-width: 768px) {
+            .profile-container {
+                flex-direction: column; /* Stack sections vertically on smaller screens */
+            }
+
+            .image-section, .info-section {
+                width: 100%; /* Full width for smaller screens */
+            }
+
+            .additional-section {
+                flex-direction: column; /* Stack sections vertically */
+            }
+
+            .diagnosis-section, .gallery, .treatment-section {
+                width: 100%; /* Full width for smaller screens */
+            }
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        /* Modal Content (Image) */
+        .modal-container{
+            width: 90%;
+            height: 90%;
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            object-fit: contain;
+            width: 100%;
+            height: 100%;
+        }
+        #modal-button {
+            background-color: #00457d; 
+            border: none;
+            color: rgb(180, 213, 235);;
+            padding: 5px;
+            text-align: center;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            border-radius: 5px;
+            border: 2px solid #00457d;
+        }
+
+        #modal-button:hover {
+            background-color: #e1eaff;
+        }
+        /* The Close Button */
+        .close {
+            position: absolute;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Patient's Profile</div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="upload_mri.html">Upload MRI</a></li>
+                <li class="dropdown">
+                    <a href="#" class="btnn dropdown-toggle">Filters</a>
+                    <div class="dropdown-content">
+                        <div>
+                            <button class="btn-containerrr">
+                            <select id="img-filter" class="filter-btn">
+                                <option value="gaussian">Image processing</option>
+                                <option value="gaussian">Gaussian</option>
+                                <option value="enhance">Enhance Edges</option>
+                                <option value="thresh">Threshold</option>
+                            </select>
+                        
+                        </div>
+                    
+                        <div>
+                            <button class="btn-containerrr">
+                            <select id="img-filter" class="filter-btn">
+                                <option value="skull">Skull Stripping</option>
+                                <option value="enable">enabled</option>
+                                <option value="disabke">diabled</option>
+                            </select>
+                        
+                        </div>
+                    </div>
+                
+                </li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        
+        
+        
+    </header>
+    <!-- <div class="c"></div> -->
+
+
+    
+        <main>
+            
+            <div class="profile-container">
+                <div class="image-section">
+                    <div id="segmentedImagePreview">
+                        <canvas id="imageCanvas" width="300" height="300"></canvas> <!-- Added canvas for drawing -->
+                        <img id="selectedImage"  alt="Selected Patient Image">
+                    </div>
+                    <p class="image-label">Patient's Segmented Image</p>
+                    <button class="btn" id="edit-btn">Edit Image</button> <!-- Edit button -->
+                </div>
+                
+                <div class="info-section">
+                    <div class="info-item">
+                        <h3>Patient Information</h3>
+                        <p>Name: <span id="patientName"></span></p>
+                        <p>Age: <span id="patientAge"></span></p>
+                        <p>Gender: <span id="patientGender"></span></p>
+                        <p>Phone: <span id="patientPhone"></span></p>
+                        <p>Address: <span id="patientAddress"></span></p>
+                        <p>Remarks: <span id="patientRemarks"></span></p>
+                    </div>
+
+                    <!-- New Diagnosis Section -->
+                    <div class="info-item">
+                        <h3>Diagnosis Details</h3>
+                        <p><strong>Diagnosis Type:</strong> <span id="patientDiagnosis"></span></p>
+                        <p><strong>Diagnosis Probability:</strong> <span id="patientDiagnosisProbability"></span></p>
+                        <p><strong>Date of Diagnosis:</strong> <span id="diagnosisDate"></span></p>
+                    </div>
+                    
+                    <div class="btn-container">
+                        <button class="btn" id="delete-btn">Delete Patient</button>
+                        <button class="btn back-btn" onclick="window.history.back()">Back</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Sections -->
+            <div class="additional-section">
+                <!-- Gallery Section -->
+                <div class="gallery">
+                    <h2>Patient Image Gallery</h2>
+                    <div class="gallery-images">
+                    </div>
+                </div>
+
+                <!-- Diagnosis Section -->
+                <div class="diagnosis-section">
+                    <h2>Diagnosis Output</h2>
+                    <div class="tumor-type">
+                        <strong>No Tumor:</strong> <span id="no_tumor"> </span>
+                    </div>
+                    <div class="tumor-type">
+                        <strong>Meningioma Tumor:</strong> <span id="meningioma_tumor"> </span>
+                    </div>
+                    <div class="tumor-type">
+                        <strong>Pituitary Tumor:</strong> <span id="pituitary_tumor"> </span>
+                    </div>
+                    <div class="tumor-type">
+                        <strong>Glioma Tumor:</strong> <span id="glioma_tumor"> </span>
+                    </div>
+                </div>
+
+
+        </main>
+        <!-- Treatment Section -->
+        <div class="treatment-section">
+            <h3>Treatment Progression</h3>
+
+            <!-- Treatment History Section -->
+            <div id="treatmentHistory" class="treatment-history"></div>
+
+            <!-- Treatment Form -->
+            <form id="treatmentForm" class="treatment-form">
+                <label for="treatmentDate">Treatment Date:</label>
+                <input type="date" name="treatmentDate" id="treatmentDate" required>
+
+                <label for="treatment-details">Treatment Details:</label>
+                <textarea name="treatmentDetails" id="treatmentDetails" rows="3" placeholder="Enter treatment details..." required></textarea>
+
+                <label for="treatment-outcome">Outcome:</label>
+                <textarea name="treatmentOutcome" id="treatmentOutcome" rows="3" placeholder="Enter outcome of treatment..." required></textarea>
+                
+
+                <div class="btn-container">
+                    <button type="submit" class="btn">Submit Treatment</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- image modal preview -->
+        <div id="myModal" class="modal">
+
+            <!-- The Close Button -->
+            <span class="close">&times;</span>
+        
+            <!-- Modal Content (The Image) -->
+            <div class="modal-container">
+                <img class="modal-content" id="modal-img">
+            </div>
+            <button id="modal-button" >Toggle original/segmented image</button>
+        </div>
+        </div>
+        <footer>
+            <p>© 2024 Brain Tumor Detection. All Rights Reserved.</p>
+        </footer>
+
+        <script>
+
+            
+
+            function previewImage(image) {
+                console.log('the image src:', image.imagePath);
+                var modal = document.getElementById("myModal");
+                var modalImg = document.getElementById("modal-img");
+                const modalButton = document.getElementById("modal-button");
+                modalButton.onclick = () => toggleOriginalSegmentedImage(image)
+                modal.style.display = "flex";
+                modalImg.src = '.'+image.imagePath;
+                
+                var span = document.getElementsByClassName("close")[0];
+                span.onclick = function() {
+                    modal.style.display = "none";
+                };
+            }
+
+            function toggleOriginalSegmentedImage(image) {
+                console.log('toggle original/segmented images', image);
+                var modalImg = document.getElementById("modal-img");
+                console.log('image src', modalImg.src);
+                modalImg.src = modalImg.src.includes(image.imagePath) ? '.'+image.outputImagePath : '.'+image.imagePath ;
+            }
+
+            function displayImageDiagnosisDetails(image, index){
+                console.log('On mouse enter image::', image, index);
+                const galleryDiv = document.querySelector('.gallery-images');
+
+                // Select all images inside the galleryDiv
+                const images = galleryDiv.querySelectorAll('img');
+
+                // Now you can access each image element
+                images.forEach((img, index) => {
+                    img.classList.remove('highlighted-image')
+                });
+                const img = document.getElementById(index)
+                img.classList.add('highlighted-image')
+                document.getElementById('no_tumor').innerText = image.classProbabilities['no_tumor'].toFixed(8) || '';
+                document.getElementById('glioma_tumor').innerText = image.classProbabilities['glioma_tumor'].toFixed(8) || '';
+                document.getElementById('meningioma_tumor').innerText = image.classProbabilities['meningioma_tumor'].toFixed(8) || '';
+                document.getElementById('pituitary_tumor').innerText = image.classProbabilities['pituitary_tumor'].toFixed(8) || '';
+                
+            } 
+
+            // Function to get URL parameters
+            function getUrlParams() {
+                const params = {};
+                const queryString = window.location.search.substring(1);
+                const regex = /([^&=]+)=([^&]*)/g;
+                let m;
+                while (m = regex.exec(queryString)) {
+                    params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+                }
+                return params;
+            }
+    
+            // Function to fetch patient data by ID
+            async function fetchPatientData(patientId) {
+                try {
+                    console.log("patient's id:", patientId);
+                    const response = await fetch(`http://localhost:3000/api/patients/${patientId}`);
+                    console.log("response:", response);
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    const patient = await response.json();
+                    console.log('the patient images::', patient.images);
+                    displayPatientData(patient);
+                } catch (error) {
+                    console.error('Error fetching patient data:', error);
+                    document.getElementById('output').innerText = 'Failed to load patient data.'; // Display an error message
+                }
+            }
+    
+            // Function to display patient data in the profile
+            function displayPatientData(patient) {
+                
+                //display patient infos
+                document.getElementById('patientName').innerText = patient.name || 'N/A';
+                document.getElementById('patientAge').innerText = patient.age || 'N/A';
+                document.getElementById('patientGender').innerText = patient.gender || 'N/A';
+                document.getElementById('patientAddress').innerText = patient.address || 'N/A';
+                document.getElementById('patientPhone').innerText = patient.phone || 'N/A';
+                document.getElementById('patientRemarks').innerText = patient.remarks || 'N/A';
+                
+                //predict the label from the diffrent image's results
+                let patientDiagnosis = "";
+                let patientDiagnosisProbability = 0;
+                let segmentedImagePath = ""
+                
+                patient.images.forEach(({outputImagePath ,classProbabilities}) => {
+                    for (const [tumorType, probability] of Object.entries(classProbabilities)) {
+                        if (probability > patientDiagnosisProbability) {
+                            patientDiagnosisProbability = probability;
+                            patientDiagnosis = tumorType;
+                            segmentedImagePath = '.'+outputImagePath
+                        }
+                    }
+                });
+
+                patientDiagnosis = patientDiagnosis.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+                patientDiagnosisProbability = patientDiagnosisProbability.toFixed(8)
+
+                console.log("Tumor type with the highest probability:", patientDiagnosis);
+                console.log("Highest probability value:", patientDiagnosisProbability);
+                //diagnosis details:
+                document.getElementById('patientDiagnosis').innerText = patientDiagnosis || 'N/A';
+                document.getElementById('patientDiagnosisProbability').innerText = patientDiagnosisProbability || 'N/A';
+                document.getElementById('diagnosisDate').innerText = (new Date(patient.createdAt)).toLocaleString() || 'N/A';
+                
+                //display the patient's best image
+                console.log("segmentedImagePath:", segmentedImagePath);
+                const selectedImage = document.getElementById('selectedImage')
+                selectedImage.src = segmentedImagePath
+                console.log("segemented image", selectedImage);
+
+                //display the patient's images
+                console.log("display the patient's images", patient.images);
+                const galleryDiv = document.querySelector('.gallery-images');
+                patient.images.forEach((image, index) => {
+                    const imageSrc = '.'+image.imagePath
+                    const img = document.createElement('img');
+                    img.id = index;
+                    img.classList= []
+                    img.src = imageSrc;
+                    img.alt = "Patient Image N°"+(index+1);
+                    img.style.margin = "5px"
+                    img.onclick = () => previewImage(image); // Attach the onclick event
+                    img.onmouseenter = () => displayImageDiagnosisDetails(image, index); // Attach the onmouseenter event (to display disgnosis output section)
+                    console.log("the image ::", img);
+                    // Append the img element to the gallery div
+                    galleryDiv.appendChild(img);
+                });
+
+            }
+    
+            
+            // Fetch patient data on page load
+            document.addEventListener('DOMContentLoaded', () => {
+                const params = getUrlParams();
+                const patientId = params.id;
+                if (patientId) {
+                    fetchPatientData(patientId);
+                }
+            });
+
+            // Submit treatmentForm data using  API
+            const form = document.getElementById('treatmentForm');
+            form.addEventListener('submit', async function (event) {
+                event.preventDefault();
+                const formData = new FormData(form); // Collect all form data
+                
+                const payload = {}
+                for (const [key, value] of formData.entries()) {
+                    payload[key] = value;
+                }
+                const params = getUrlParams();
+                payload['patientId'] = params.id;
+                try {
+                    console.log('treatmentForm data:', payload);
+                    const response = await fetch('http://localhost:3000/api/treatment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json' // Specify the content type
+                        },
+                        body: JSON.stringify(payload)
+                    });
+                    console.log('response:', response);
+                    // Check if the response is successful
+                    if (response.ok) {
+                        form.reset();
+                       } else {
+                        const errorData = await response.json();
+                        document.getElementById('output').innerText = errorData.message || 'Error submitting the form.';
+                        console.error('Error Response:', errorData);
+                    }
+                } catch (error) {
+                    document.getElementById('output').innerText = 'Error submitting the form.';
+                    console.error('Fetch Error:', error);
+                }
+            })
+
+        </script>
+</body>
+</html>
